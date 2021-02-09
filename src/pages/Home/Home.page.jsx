@@ -1,39 +1,39 @@
-import React, { useRef } from 'react';
-import { Link, useHistory } from 'react-router-dom';
-
-import { useAuth } from '../../providers/Auth';
+import React from 'react';
+import { Link, Redirect } from 'react-router-dom';
 import './Home.styles.css';
+import { withRouter } from 'react-router';
+// Redux
+import { connect } from "react-redux";
 
-function HomePage() {
-  const history = useHistory();
-  const sectionRef = useRef(null);
-  const { authenticated, logout } = useAuth();
 
-  function deAuthenticate(event) {
-    event.preventDefault();
-    logout();
-    history.push('/');
+class HomePage extends React.Component {
+  constructor(props){
+    super(props)
+    this.myRef = React.createRef();
   }
 
-  return (
-    <section className="homepage" ref={sectionRef}>
-      <h1>Hello stranger!</h1>
-      {authenticated ? (
-        <>
-          <h2>Good to have you back</h2>
-          <span>
-            <Link to="/" onClick={deAuthenticate}>
-              ← logout
-            </Link>
-            <span className="separator" />
-            <Link to="/secret">show me something cool →</Link>
-          </span>
-        </>
-      ) : (
-        <Link to="/login">let me in →</Link>
-      )}
-    </section>
-  );
+  render(){
+    return (
+      <section className="homepage" ref={this.myRef}>
+        <h1>Welcome to the challenge!</h1>
+        {this.props.authenticated ? <Redirect to="/explore" /> : <Link data-testid={'login-link'} to="/login">let me in →</Link>}
+      </section>
+    );
+  }
 }
 
-export default HomePage;
+const mapStateToProps = (state) => {
+  return {
+    authenticated: !!state.auth?.id || false
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(withRouter(HomePage));

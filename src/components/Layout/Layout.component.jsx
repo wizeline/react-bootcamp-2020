@@ -1,9 +1,12 @@
+import { render } from '@testing-library/react';
 import React from 'react';
 
 import './Layout.styles.css';
 
-function Layout({ children }) {
-  return <main className="container">{children}</main>;
+class Layout extends React.Component{
+  render(){
+    return <main className="container">{this.props.children}</main>;
+  }
 }
 
 export default Layout;
