@@ -21,7 +21,7 @@ export const fetchPopularVideosAction = (search) => async (dispatch) => {
 
 export const fetchRelatedVideosAction = (videoId) => async (dispatch) => {
   fetchRelatedVideos(videoId).then((res) => {
-    dispatch(setVideosAction(res))
+    dispatch(concatVideosAction(res))
   }).catch(err => console.log('ERR'))
 }
 

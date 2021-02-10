@@ -26,13 +26,14 @@ class VideoDetailPage extends React.Component {
 
   componentDidMount(){
     // fetch related videos actions
-    this.props.dispatchFetchRelatedVideos(this.id)
+    // this.props.dispatchFetchRelatedVideos(this.id)
   }
 
   componentDidUpdate(prevProps) {
     if(prevProps.location.pathname !== this.props.location.pathname){
-      console.log('STATEE', this.props)
       const newVideoId = this.props.location.pathname.split('/')[2]
+      console.log('THIS.PROPS', this.props)
+      this.props.dispatchFetchRelatedVideos(newVideoId)
       this.setState({
         id: newVideoId,
         // relatedVideos: filterLastRelatedVideos(this.props.mockedVideos, this.state.id),
