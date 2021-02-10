@@ -1,23 +1,35 @@
 import React from 'react';
-import { screen, render } from '@testing-library/react';
+import { render, screen } from '../../utils/test-utils'
 import { BrowserRouter } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
 import LoginPage from './Login.page';
+import Adapter from 'enzyme-adapter-react-16';
+import { configure } from 'enzyme';
+import configureStore from 'redux-mock-store';
+import { Provider } from 'react-redux';
 
-jest.mock('../../providers/Auth', () => ({
-  useAuth: () => ({
-    authenticated: false,
-    login: jest.fn(),
-  }),
-  loginApi: jest.fn().mockImplementation(() => Promise.resolve()),
-}));
+configure({adapter: new Adapter()});
+const mockStore = configureStore([]);
 
 describe('LoginPage', () => {
+  let store;
+  let component;
+ 
+  beforeEach(() => {
+    store = mockStore({
+      myState: 'sample text',
+    });
+    store.dispatch = jest.fn();
+    component = (
+      <Provider store={store}>
+        <BrowserRouter><LoginPage /></BrowserRouter>
+      </Provider>
+    );
+  });
+
   it('renders the form component', () => {
     render(
-      <BrowserRouter>
-        <LoginPage />
-      </BrowserRouter>
+      component
     );
     expect(screen.getByTestId('username-field')).toBeInTheDocument();
     expect(screen.getByTestId('password-field')).toBeInTheDocument();
@@ -25,9 +37,7 @@ describe('LoginPage', () => {
 
   it('writes inside the fields and click button ', async () => {
     const renderer = render(
-      <BrowserRouter>
-        <LoginPage />
-      </BrowserRouter>
+      component
     );
     const usernameInput = screen.getByTestId('username-field');
     const passwordInput = screen.getByTestId('password-field');

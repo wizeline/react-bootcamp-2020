@@ -19,36 +19,36 @@ import SearchResultsPage from '../../pages/SearchResults/SearchResults.page';
 function App(){
     return (
       <>
-        <Provider store={store}>
-              <BrowserRouter>
-                <Menu />
-                <Layout>
-                  <Switch>
-                    <Route exact path="/">
-                      <HomePage />
-                    </Route>
-                    <Route exact path="/login">
-                      <LoginPage />
-                    </Route>
-                    <Private exact path="/explore">
-                      <ExplorePage />
-                    </Private>
-                    <Private exact path="/search">
-                      <SearchResultsPage />
-                    </Private>
-                    <Private exact path="/favorites">
-                      <FavoritesPage />
-                    </Private>
-                    <Private exact path="/video/:id">
-                      <VideoDetailPage />
-                    </Private>
-                    <Route path="*">
-                      <NotFound />
-                    </Route>
-                  </Switch>
-                </Layout>
-              </BrowserRouter>
-        </Provider>
+        <BrowserRouter>
+          <Provider store={store}>
+          <Menu />
+          <Layout>
+            <Switch>
+              <Route exact path="/">
+                <HomePage />
+              </Route>
+              <Route exact path="/login">
+                <LoginPage />
+              </Route>
+              <Private exact path="/explore">
+                <ExplorePage />
+              </Private>
+              <Private exact path="/search">
+                <SearchResultsPage />
+              </Private>
+              <Private exact path="/favorites">
+                <FavoritesPage />
+              </Private>
+              <Private exact path="/video/:id">
+                <VideoDetailPage />
+              </Private>
+              <Route path="*">
+                <NotFound />
+              </Route>
+            </Switch>
+          </Layout>
+          </Provider>
+        </BrowserRouter>
       </>
     );
 }

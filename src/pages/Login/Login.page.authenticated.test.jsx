@@ -1,25 +1,49 @@
-import React from 'react';
-import { screen, render } from '@testing-library/react';
+import React from 'react'
+import { render, screen } from '../../utils/test-utils'
 import { BrowserRouter } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
 import LoginPage from './Login.page';
+import Adapter from 'enzyme-adapter-react-16';
+import { configure } from 'enzyme';
+import configureStore from 'redux-mock-store';
+import { Provider } from 'react-redux';
 
-jest.mock('../../providers/Auth', () => ({
-  useAuth: () => ({
-    authenticated: true,
-    login: jest.fn(),
-  }),
-  loginApi: jest.fn().mockImplementation(() => Promise.resolve()),
-}));
+configure({adapter: new Adapter()});
+const mockStore = configureStore([]);
 
-describe('LoginPage authenticated', () => {
-  it('redirects to /', () => {
-    render(
-      <BrowserRouter>
-        <LoginPage />
-      </BrowserRouter>
+describe('LoginPage failure scenario', () => {
+  let store;
+  let component;
+ 
+  beforeEach(() => {
+    store = mockStore({
+      auth: {
+        id: 1,
+        avatarUrl: 'asdad',
+        name: 'wizeline'
+      }
+    });
+    store.dispatch = jest.fn();
+    component = (
+      <Provider store={store}>
+        <BrowserRouter><LoginPage /></BrowserRouter>
+      </Provider>
     );
-    expect(screen.queryAllByTestId('username-field').length).toEqual(0);
-    expect(screen.queryAllByTestId('password-field').length).toEqual(0);
+  });
+
+  describe('LoginPage authenticated', () => {
+    it('redirects to /', () => {
+      render(
+        component, {
+          auth: {
+            id: 1,
+            avatarUrl: 'asdad',
+            name: 'wizeline'
+          }
+        }
+      );
+      expect(screen.queryAllByTestId('username-field').length).toEqual(0);
+      expect(screen.queryAllByTestId('password-field').length).toEqual(0);
+    });
   });
 });

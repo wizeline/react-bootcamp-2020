@@ -1,24 +1,42 @@
 import React from 'react';
-import { screen, render, act } from '@testing-library/react';
+import { act } from '@testing-library/react';
+import { render, screen } from '../../utils/test-utils'
 import { BrowserRouter } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
 import LoginPage from './Login.page';
+import Adapter from 'enzyme-adapter-react-16';
+import { configure } from 'enzyme';
+import configureStore from 'redux-mock-store';
+import { Provider } from 'react-redux';
 
-jest.mock('../../providers/Auth', () => ({
-  useAuth: () => ({
-    authenticated: false,
-    login: jest.fn(),
-  }),
-  loginApi: jest.fn().mockImplementation(() => Promise.reject()),
-}));
+configure({adapter: new Adapter()});
+const mockStore = configureStore([]);
 
 describe('LoginPage failure scenario', () => {
+  let store;
+  let component;
+ 
+  beforeEach(() => {
+    store = mockStore({
+      myState: 'sample text',
+    });
+    store.dispatch = jest.fn();
+    component = (
+      <Provider store={store}>
+        <BrowserRouter><LoginPage /></BrowserRouter>
+      </Provider>
+    );
+  });
+
   it('writes inside the fields and click button ', async () => {
-    act( () => {render(
-      <>
-        <LoginPage />
-      </>
-    )});
+    act(() => {
+      render(component, {
+        initialState: {
+          auth: {},
+          videos: {}
+        }
+      })
+    });
     
     await act(async() => {
       const usernameInput = screen.getByTestId('username-field');
