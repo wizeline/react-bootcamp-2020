@@ -1,0 +1,58 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`My Connected React-Redux Component should render with given state from Redux store 1`] = `
+<section
+  className="login"
+>
+  <h1>
+    Welcome to Videos!
+  </h1>
+  <form
+    className="login-form"
+    onSubmit={[Function]}
+  >
+    <div
+      className="form-group"
+    >
+      <label
+        htmlFor="username"
+      >
+        <strong>
+          username 
+        </strong>
+        <input
+          data-testid="username-field"
+          id="username"
+          onChange={[Function]}
+          required={true}
+          type="text"
+        />
+      </label>
+    </div>
+    <div
+      className="form-group"
+    >
+      <label
+        htmlFor="password"
+      >
+        <strong>
+          password 
+        </strong>
+        <input
+          data-testid="password-field"
+          id="password"
+          onChange={[Function]}
+          required={true}
+          type="password"
+        />
+      </label>
+    </div>
+    <button
+      data-testid="login-submit-button"
+      type="submit"
+    >
+      login
+    </button>
+  </form>
+</section>
+`;

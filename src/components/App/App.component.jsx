@@ -1,58 +1,56 @@
-import React, { useLayoutEffect } from 'react';
+// Libs
+import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-
-import AuthProvider from '../../providers/Auth';
+// Redux
+import { Provider } from 'react-redux';
+import store from '../../redux/store/store'
+// Components
 import HomePage from '../../pages/Home';
 import LoginPage from '../../pages/Login';
 import NotFound from '../../pages/NotFound';
-import SecretPage from '../../pages/Secret';
 import Private from '../Private';
-import Fortune from '../Fortune';
 import Layout from '../Layout';
-import { random } from '../../utils/fns';
+import Menu from '../Menu';
+import ExplorePage from '../../pages/Explore/Explore.page';
+import FavoritesPage from '../../pages/Favorites/Favorites.page';
+import VideoDetailPage from '../../pages/VideoDetail/VideoDetail.page';
+import SearchResultsPage from '../../pages/SearchResults/SearchResults.page';
 
-function App() {
-  useLayoutEffect(() => {
-    const { body } = document;
-
-    function rotateBackground() {
-      const xPercent = random(100);
-      const yPercent = random(100);
-      body.style.setProperty('--bg-position', `${xPercent}% ${yPercent}%`);
-    }
-
-    const intervalId = setInterval(rotateBackground, 3000);
-    body.addEventListener('click', rotateBackground);
-
-    return () => {
-      clearInterval(intervalId);
-      body.removeEventListener('click', rotateBackground);
-    };
-  }, []);
-
-  return (
-    <BrowserRouter>
-      <AuthProvider>
-        <Layout>
-          <Switch>
-            <Route exact path="/">
-              <HomePage />
-            </Route>
-            <Route exact path="/login">
-              <LoginPage />
-            </Route>
-            <Private exact path="/secret">
-              <SecretPage />
-            </Private>
-            <Route path="*">
-              <NotFound />
-            </Route>
-          </Switch>
-          <Fortune />
-        </Layout>
-      </AuthProvider>
-    </BrowserRouter>
-  );
+function App(){
+    return (
+      <>
+        <BrowserRouter>
+          <Provider store={store}>
+          <Menu />
+          <Layout>
+            <Switch>
+              <Route exact path="/">
+                <HomePage />
+              </Route>
+              <Route exact path="/login">
+                <LoginPage />
+              </Route>
+              <Private exact path="/explore">
+                <ExplorePage />
+              </Private>
+              <Private exact path="/search">
+                <SearchResultsPage />
+              </Private>
+              <Private exact path="/favorites">
+                <FavoritesPage />
+              </Private>
+              <Private exact path="/video/:id">
+                <VideoDetailPage />
+              </Private>
+              <Route path="*">
+                <NotFound />
+              </Route>
+            </Switch>
+          </Layout>
+          </Provider>
+        </BrowserRouter>
+      </>
+    );
 }
 
 export default App;
